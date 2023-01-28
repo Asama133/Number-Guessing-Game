@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guessing Game</title>
+  </head>
+  <style>
+    body {
+      height: 100vh;
+      font: 2.5vw blueviolet ;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: Georgia, Times, "Times New Roman", serif;
+    }
+   
+    h1 {
+      width: 60%;
+      text-align: center;
+    }
+    section {
+      width: 60%;
+      height: 50%;
+      background-color: rgba(240, 248, 255, 0.862);
+      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.134);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      overflow: hidden;
+      border-radius: 5px;
+    }
+    h3 {
+      width: 100%;
+      background-color: rgba(137, 43, 226, 0.373);
+      text-align: center;
+      height: 50px;
+      margin-top: 0;
+      line-height: 50px;
+      opacity: 0;
+      transition: 1s;
+    }
+
+    input {
+      padding: 20px;
+      border: none;
+      box-shadow: 2px 2px 5px inset rgba(0, 0, 0, 0.134),
+        -2px -2px 5px inset rgba(0, 0, 0, 0.134);
+    }
+    input[type="button"],
+    button {
+      background-color: blueviolet;
+      border-radius: 10px;
+      color: aliceblue;
+      cursor: pointer;
+    }
+    button {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      border: none;
+    }
+    section div {
+      align-self: flex-start;
+      justify-self: flex-end;
+      transform: translateY(50px);
+      margin-left: 20px;
+    }
+    div span {
+      background-color: white;
+      box-shadow: 2px 2px 5px inset rgba(0, 0, 0, 0.134),
+        -2px -2px 5px inset rgba(0, 0, 0, 0.134);
+      padding: 10px;
+    }
+    img {
+      display: none;
+      position: absolute;
+
+      animation: fly 2s linear infinite;
+    }
+    @keyframes fly {
+      0% {
+        transform: translateY(500px);
+      }
+      100% {
+        transform: translateY(-1000px);
+        opacity: 0;
+      }
+    }
+  </style>
+  <body>
+    <h1>Number Guessing Game</h1>
+    <section>
+      <h3></h3>
+      <input type="text" />
+      <input type="button" value="Submit Guess" />
+      <div>
+        <label for="">Guessing Remaining</label>
+        <span>3</span>
+      </div>
+    </section>
+    <button>New Game</button>
+    <img src="ballon.png" alt="" />
+    <script>
+      //get html elements
+      let section = document.querySelector("section");
+      let input = document.querySelector("input[type='text']");
+      let button = document.querySelector("input[type='button']");
+      let head = document.querySelector("h3");
+      let span = document.querySelector("span");
+      let disabled = document.createAttribute("disabled");
+      let raedOnly = document.createAttribute("readonly");
+      //random number
+      let num = Math.floor(Math.random() * 10);
+      console.log(num);
+
+      button.addEventListener("click", () => {
+        if (input.value !== "") {
+          //add sound when click
+          addAudio("click.mp3");
+          //count down span number
+          
+          //if input value == or !== num
+          guessNum(input.value);
+        }
+        //when span text == 0
+        spanText(span.textContent);
+
+        input.value = "";
+
+        head.style.opacity = "1"
+      });
+
+      // dispaly new game
+      document.querySelector("button").onclick = function (e) {
+        location.reload();
+      };
+
+      function guessNum(inputNum) {
+        if (+inputNum === num) {
+         
+          head.textContent = "well Done !";
+          button.setAttributeNode(disabled);
+          input.setAttributeNode(raedOnly);
+          head.style.background = "blueviolet";
+          button.style.cursor = "default"
+          document.querySelector("img").style.display = "block";
+          section.style.border = "4px green solid";
+          addAudio("clapping.wav");
+          
+        } else {
+          span.textContent--;
+            head.textContent = "try again"
+      }
+    }
+      function spanText(spantext) {
+        if (spantext === "0") {
+          button.setAttributeNode(disabled);
+          button.style.cursor = "not-allowed"
+          head.textContent = "Game Over";
+          input.setAttributeNode(raedOnly);
+          section.style.cssText = "border: 1px red solid; opacity:0.5";
+          document.querySelector("button").style.display = "block";
+          addAudio("wah.mp3");
+        }
+      }
+      //display audios
+      function addAudio(audioName) {
+        let audio = new Audio(audioName);
+        audio.play();
+      }
+
+button.addEventListener("mouseleave",()=>{
+  setTimeout(()=>{
+head.style.opacity = "0"
+  },500)
+})
+    </script>
+  </body>
+</html>
